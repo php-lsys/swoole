@@ -11,7 +11,7 @@ go(function () {
             //如果你使用框架带了依赖管理器,可通过把自行NEW对象并注册到你的依赖管理器中
             $redis=\LSYS\Swoole\Coroutine\RedisPool\DI::get()->swoole_redis_pool();
             //$msyql = new \LSYS\Swoole\Coroutine\RedisPool($config);
-            //从线程池中得到一个MYSQL连接对象
+            //从线程池中得到一个连接对象
             $connection=$redis->pop();
             //辅助请求方法,改成下面形式 用于非事务请求时断链自动重启连接并请求
             $res=$redis->query($connection, function()use($connection){
