@@ -1,0 +1,16 @@
+{
+	"require" : {
+		"lsys/core" : "~2.0.0",
+		"lsys/config" : "~2.0.0",
+		"lsys/loger" : "~2.0.0",
+		"apache/thrift": "^0.11.0"
+	},
+	"require-dev" : {
+		"eaglewu/swoole-ide-helper" : "dev-master"
+	},
+	"autoload" : {
+		"psr-4" : {
+			"LSYS\\" : "src/classes/LSYS/"
+		}
+	}
+}
