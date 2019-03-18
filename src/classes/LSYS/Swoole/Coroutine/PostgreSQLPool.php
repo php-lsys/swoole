@@ -1,7 +1,7 @@
 <?php
 namespace LSYS\Swoole\Coroutine;
 /**
- * @method \LSYS\Swoole\Coroutine\PostgreSQLPool\PostgreSQL pop($node="master")
+ * @method \LSYS\Swoole\Coroutine\PostgreSQLPool\PostgreSQL pop($node="master*")
  * @method static push(\LSYS\Swoole\Coroutine\PostgreSQLPool\PostgreSQL $connection)
  */
 class PostgreSQLPool extends Pool{

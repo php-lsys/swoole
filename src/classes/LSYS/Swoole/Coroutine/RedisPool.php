@@ -1,7 +1,7 @@
 <?php
 namespace LSYS\Swoole\Coroutine;
 /**
- * @method \LSYS\Swoole\Coroutine\RedisPool\Redis pop($node="master")
+ * @method \LSYS\Swoole\Coroutine\RedisPool\Redis pop($node="master*")
  * @method static push(\LSYS\Swoole\Coroutine\RedisPool\Redis $connection)
  */
 class RedisPool extends Pool{

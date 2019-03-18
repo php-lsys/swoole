@@ -1,7 +1,7 @@
 <?php
 namespace LSYS\Swoole\Coroutine;
 /**
- * @method \LSYS\Swoole\Coroutine\MySQLPool\MySQL pop($node="master")
+ * @method \LSYS\Swoole\Coroutine\MySQLPool\MySQL pop($node="master*")
  * @method static push(\LSYS\Swoole\Coroutine\MySQLPool\MySQL $connection)
  */
 class MySQLPool extends Pool{

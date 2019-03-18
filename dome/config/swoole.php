@@ -5,7 +5,7 @@ return array(
         "sleep"=>1,//断开连接重连暂停时间
         "master"=>array(
             "size"=>1,//队列长度
-            "weight"=>1,//队列长度
+            "weight"=>1,//权重
             "connection"=>array(
                 'host' => '127.0.0.1',
                 'port' => 3306,
@@ -17,7 +17,7 @@ return array(
         ),
         "slave1"=>array(
             "size"=>1,//队列长度
-            "weight"=>1,//队列长度
+            "weight"=>1,//权重
             "connection"=>array(
                 'host' => '127.0.0.1',
                 'port' => 3306,
@@ -29,7 +29,7 @@ return array(
         ),
         "slave2"=>array(
             "size"=>1,//队列长度
-            "weight"=>1,//队列长度
+            "weight"=>1,//权重
             "connection"=>array(
                 'host' => '127.0.0.1',
                 'port' => 3306,
@@ -41,7 +41,7 @@ return array(
         ),
         "slave3"=>array(
             "size"=>1,//队列长度
-            "weight"=>1,//队列长度
+            "weight"=>1,//权重
             "connection"=>array(
                 'host' => '127.0.0.1',
                 'port' => 3306,
@@ -57,7 +57,7 @@ return array(
         "sleep"=>1,//断开连接重连暂停时间
         "master"=>array(
             "size"=>1,//队列长度
-            "weight"=>1,//队列长度
+            "weight"=>1,//权重
             "connection"=>array(
                 'auth'              =>'foobaredOu9u080D8FM987H98H98N&%%&%',
                 'host'             	=> '192.168.1.101',
@@ -72,7 +72,7 @@ return array(
         "sleep"=>1,//断开连接重连暂停时间
         "master"=>array(
             "size"=>1,//队列长度
-            "weight"=>1,//队列长度
+            "weight"=>1,//权重
             "connection"=>array(
                 'dsn' => 'host=127.0.0.1 port=5432 dbname=test user=root password=',
             )

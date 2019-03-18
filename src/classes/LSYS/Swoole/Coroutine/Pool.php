@@ -10,7 +10,7 @@ abstract class Pool{
     /**
      * @var int
      */
-    protected $currentCount;
+    protected $currentCount=[];
     /**
      * @var \Swoole\Coroutine\Channel[]
      */
@@ -61,22 +61,58 @@ abstract class Pool{
         return $res;
     }
     /**
+     * 从池中取得一个连接,记得归还
+     * @param string $node master* 为匹配配置中 master开头的配置 获取指定配置不要加*
      * @return Connection
      */
     public function pop(string $node="master*"):Connection
     {
-        if(substr($node, -1)=='*'){
-            $config=$this->config()->as_array();
-            $_node=substr($node, 0,-1);
+        if(substr($node, -1)=='*'){//按权重获取
             $_config=[];
-            foreach ($config as $k=>$v){
-                if(isset($v['connection'])&&strpos($k, $_node)===0){
-                    $_config[$k]=$v;
+            $config=$this->config()->as_array();
+            if(strlen($node)>1){
+                $_node=substr($node, 0,-1);
+                foreach ($config as $k=>$v){
+                    if(isset($v['connection'])&&strpos($k, $_node)===0){
+                        $_config[$k]=$v;
+                    }
                 }
+            }else $_config=$config;
+            $filter_key=array();
+            $channel=null;//第一个从权重中拿到的 channel
+            foreach ($_config as $v){
+                foreach ($filter_key as $vv)unset($_config[$vv]);
+                $is_last=count($_config)==1;
+                if($is_last)$_node=key($_config);
+                else {
+                    $_node=$this->configWeightGet($_config);
+                    $filter_key[]=$_node;
+                }
+                $_channel=$this->nodeFindChannel($_node);
+                if(!$channel)$channel=$_channel;
+                if($_channel->isEmpty()){
+                    if($this->currentCount($_node)<$_channel->capacity){
+                        $this->currentCount[$_node]++;
+                        return $this->createConnection($_node);
+                    }else{
+                        if($is_last)break;//
+                    }
+                }else break;//存在连接在队列
             }
-            $_node=$this->configWeightGet($_config);
-            if ($_node)$node=$_node;
+        }else{//指定某服务器
+            $channel=$this->nodeFindChannel($node);
+            if($channel->isEmpty()&&$this->currentCount($node)<$channel->capacity){
+                $this->currentCount[$node]++;
+                return $this->createConnection($node);
+            }
         }
+        return $channel->pop();
+    }
+    protected function currentCount($node) {
+        if(!isset($this->currentCount[$node])) $this->currentCount[$node]=0;
+        return $this->currentCount[$node];
+    }
+    protected function nodeFindChannel($node) {
         if(!isset($this->channel[$node])){
             if(!$this->config->exist($node)){
                 throw new Exception(strtr("node[:node] not find",[":node"=>$node]));
@@ -84,14 +120,10 @@ abstract class Pool{
             $size=(int)$this->config->get($node.".size",1);
             $this->channel[$node] = new \Swoole\Coroutine\Channel($size);
         }
-        $channel=$this->channel[$node];
-        if($channel->isEmpty()&&$this->currentCount<$channel->capacity){
-            $this->currentCount++;
-            return $this->createConnection($node);
-        }
-        return $channel->pop();
+        return $this->channel[$node];
     }
     /**
+     * 把连接归还回池中
      * @param Connection $connection
      * @return $this
      */
