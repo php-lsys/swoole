@@ -1,12 +1,15 @@
 <?php
 namespace LSYS\Swoole\Coroutine\RedisPool;
 use LSYS\Swoole\Coroutine\Connection;
+use LSYS\Swoole\Coroutine\RedisPool;
 class Redis implements Connection{
     protected $redis;
     protected $isswoole=true;
     protected $config;
     protected $node;
-    public function __construct($node,array $config){
+    protected $pool;
+    public function __construct(RedisPool $pool,$node,array $config){
+        $this->pool=$pool;
         $this->node=$node;
         $this->config=$config;
         $this->create();
@@ -82,5 +85,12 @@ class Redis implements Connection{
     public function node():string
     {
         return $this->node;
+    }
+    /**
+     * @return RedisPool
+     */
+    public function getPool()
+    {
+        return $this->pool;
     }
 }

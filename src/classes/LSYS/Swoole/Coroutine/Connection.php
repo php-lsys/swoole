@@ -16,4 +16,9 @@ interface Connection{
      * @return object
      */
     public function get();
+    /**
+     * 得到连接池对象
+     * @return Pool
+     */
+    public function getPool();
 }

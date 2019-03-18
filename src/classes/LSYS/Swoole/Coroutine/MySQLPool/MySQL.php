@@ -1,11 +1,14 @@
 <?php
 namespace LSYS\Swoole\Coroutine\MySQLPool;
 use LSYS\Swoole\Coroutine\Connection;
+use LSYS\Swoole\Coroutine\MySQLPool;
 class MySQL implements Connection{
     protected $mysql;
     protected $config;
     protected $node;
-    public function __construct($node,array $config){
+    protected $pool;
+    public function __construct(MySQLPool $pool,$node,array $config){
+        $this->pool=$pool;
         $this->node=$node;
         $this->config=$config;
         $this->create();
@@ -60,5 +63,12 @@ class MySQL implements Connection{
     public function node():string
     {
         return $this->node;
+    }
+    /**
+     * @return MySQLPool
+     */
+    public function getPool()
+    {
+        return $this->pool;
     }
 }

@@ -6,7 +6,7 @@ namespace LSYS\Swoole\Coroutine;
  */
 class PostgreSQLPool extends Pool{
     protected function createConnection($node):Connection{
-        return new \LSYS\Swoole\Coroutine\PostgreSQLPool\PostgreSQL($node,$this->config->get($node.".connection",[]));
+        return new \LSYS\Swoole\Coroutine\PostgreSQLPool\PostgreSQL($this,$node,$this->config->get($node.".connection",[]));
     }
     /**
      * @param \LSYS\Swoole\Coroutine\PostgreSQLPool\PostgreSQL $connect

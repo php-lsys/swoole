@@ -67,6 +67,10 @@ abstract class Pool{
      */
     public function pop(string $node="master*"):Connection
     {
+        $cid=\Swoole\Coroutine::getUid();
+        if($cid>0){
+            $this->list[$cid]=$comm;
+        }
         if(substr($node, -1)=='*'){//按权重获取
             $_config=[];
             $config=$this->config()->as_array();
@@ -172,5 +176,11 @@ abstract class Pool{
             }
         }
         return $nodes[$_k];
+    }
+    public function startClear() {
+        //\Swoole\Coroutine::getUid()
+    }
+    public function clear() {
+        
     }
 }

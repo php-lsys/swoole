@@ -6,7 +6,7 @@ namespace LSYS\Swoole\Coroutine;
  */
 class MySQLPool extends Pool{
     protected function createConnection($node):Connection{
-        return new \LSYS\Swoole\Coroutine\MySQLPool\MySQL($node,$this->config->get($node.".connection",[]));
+        return new \LSYS\Swoole\Coroutine\MySQLPool\MySQL($this,$node,$this->config->get($node.".connection",[]));
     }
     /**
      * @param \LSYS\Swoole\Coroutine\MySQLPool\MySQL $connect 

@@ -6,7 +6,7 @@ namespace LSYS\Swoole\Coroutine;
  */
 class RedisPool extends Pool{
     protected function createConnection($node):Connection{
-        return new \LSYS\Swoole\Coroutine\RedisPool\Redis($node,$this->config->get($node.".connection",[]));
+        return new \LSYS\Swoole\Coroutine\RedisPool\Redis($this,$node,$this->config->get($node.".connection",[]));
     }
     /**
      * {@inheritDoc}
