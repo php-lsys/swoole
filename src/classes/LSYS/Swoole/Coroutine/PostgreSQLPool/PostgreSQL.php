@@ -2,11 +2,13 @@
 namespace LSYS\Swoole\Coroutine\PostgreSQLPool;
 use LSYS\Swoole\Coroutine\Connection;
 use LSYS\Swoole\Coroutine\PostgreSQLPool;
+/**
+ * @method \LSYS\Swoole\Coroutine\PostgreSQL getPool()
+ */
 class PostgreSQL implements Connection{
+	use \LSYS\Swoole\Coroutine\ConnectionTrait;
     protected $pgsql;
     protected $config;
-    protected $node;
-    protected $pool;
     public function __construct(PostgreSQLPool $pool,$node,array $config){
         $this->pool=$pool;
         $this->node=$node;
@@ -15,9 +17,7 @@ class PostgreSQL implements Connection{
         $this->connect();
     }
     protected function create(){
-        if($this->pgsql){
-            $this->pgsql=null;
-        }
+		$this->close();
         $this->pgsql=new \Swoole\Coroutine\PostgreSQL();
     }
     /**
@@ -58,15 +58,9 @@ class PostgreSQL implements Connection{
         }
         return $conn;
     }
-    public function node():string
+    public function close()
     {
-        return $this->node;
-    }
-    /**
-     * @return PostgreSQLPool
-     */
-    public function getPool()
-    {
-        return $this->pool;
+		unset($this->pgsql);
+        $this->pgsql=null;
     }
 }

@@ -26,7 +26,6 @@ go(function () {
             
             //从线程池中得到一个MYSQL连接对象
             $connection=$msyql->pop();//默认从 master* 的配置获取连接
-            $connection=$msyql->get();
             //$connection=$msyql->pop("slave*");//从库随机得到一个连接
             //$connection=$msyql->pop("slave1");//从库slave1得到一个连接
             

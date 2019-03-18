@@ -2,11 +2,13 @@
 namespace LSYS\Swoole\Coroutine\MySQLPool;
 use LSYS\Swoole\Coroutine\Connection;
 use LSYS\Swoole\Coroutine\MySQLPool;
+/**
+ * @method \LSYS\Swoole\Coroutine\MySQLPool getPool()
+ */
 class MySQL implements Connection{
+	use \LSYS\Swoole\Coroutine\ConnectionTrait;
     protected $mysql;
     protected $config;
-    protected $node;
-    protected $pool;
     public function __construct(MySQLPool $pool,$node,array $config){
         $this->pool=$pool;
         $this->node=$node;
@@ -15,10 +17,7 @@ class MySQL implements Connection{
         $this->connect();
     }
     protected function create(){
-        if($this->mysql){
-            @$this->mysql->close();
-            $this->mysql=null;
-        }
+		$this->close();
         $this->mysql=new \Swoole\Coroutine\MySQL();
     }
     /**
@@ -60,15 +59,11 @@ class MySQL implements Connection{
         if(!$re)throw new \LSYS\Exception($this->mysql->connect_error,$this->mysql->connect_errno);
         return $re;
     }
-    public function node():string
+	public function close()
     {
-        return $this->node;
-    }
-    /**
-     * @return MySQLPool
-     */
-    public function getPool()
-    {
-        return $this->pool;
+        if($this->mysql){
+            @$this->mysql->close();
+            $this->mysql=null;
+        }
     }
 }

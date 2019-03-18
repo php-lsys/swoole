@@ -2,12 +2,14 @@
 namespace LSYS\Swoole\Coroutine\RedisPool;
 use LSYS\Swoole\Coroutine\Connection;
 use LSYS\Swoole\Coroutine\RedisPool;
+/**
+ * @method \LSYS\Swoole\Coroutine\RedisPool getPool()
+ */
 class Redis implements Connection{
+	use \LSYS\Swoole\Coroutine\ConnectionTrait;
     protected $redis;
     protected $isswoole=true;
     protected $config;
-    protected $node;
-    protected $pool;
     public function __construct(RedisPool $pool,$node,array $config){
         $this->pool=$pool;
         $this->node=$node;
@@ -16,10 +18,7 @@ class Redis implements Connection{
         $this->connect();
     }
     protected function create(){
-        if($this->redis){
-            @$this->redis->close();
-            $this->redis=null;
-        }
+        $this->close();
         if (class_exists(\Swoole\Coroutine\Redis::class)) {
             $this->redis=new \Swoole\Coroutine\Redis();
         }else{
@@ -82,15 +81,11 @@ class Redis implements Connection{
         if (isset($_config['db']))$this->redis->select($_config['db']);
         return $res;
     }
-    public function node():string
+    public function close()
     {
-        return $this->node;
-    }
-    /**
-     * @return RedisPool
-     */
-    public function getPool()
-    {
-        return $this->pool;
+        if($this->redis){
+            @$this->redis->close();
+            $this->redis=null;
+        }
     }
 }

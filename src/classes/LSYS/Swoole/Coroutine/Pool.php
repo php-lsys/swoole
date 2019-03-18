@@ -67,10 +67,6 @@ abstract class Pool{
      */
     public function pop(string $node="master*"):Connection
     {
-        $cid=\Swoole\Coroutine::getUid();
-        if($cid>0){
-            $this->list[$cid]=$comm;
-        }
         if(substr($node, -1)=='*'){//按权重获取
             $_config=[];
             $config=$this->config()->as_array();
@@ -101,21 +97,49 @@ abstract class Pool{
                     }else{
                         if($is_last)break;//
                     }
-                }else break;//存在连接在队列
+                }else{
+					$channel=$_channel;
+				 	break;//存在连接在队列
+				}
             }
         }else{//指定某服务器
             $channel=$this->nodeFindChannel($node);
-            if($channel->isEmpty()&&$this->currentCount($node)<$channel->capacity){
-                $this->currentCount[$node]++;
-                return $this->createConnection($node);
+            if($channel->isEmpty()){
+				if($this->currentCount($node)<$channel->capacity){
+                	$this->currentCount[$node]++;
+                	return $this->createConnection($node);
+				}
             }
         }
+		//不为空，丢弃超时连接，感觉没什么卵用，好像很多框架都有这个，补上
+		//如果有设置的话，才进行操作。
+		$config=$this->config->get($node);
+		if(!$channel->isEmpty()
+			&&isset($config['keep_size'])
+			&&isset($config['keep_time'])
+			&&isset($config['size'])
+			&&$config['size']>0
+			&&$config['keep_size']>0
+			&&$config['keep_size']<$config['size']
+			&&$config['keep_time']>0
+		){
+			while(true){
+				if($channel->length()<=$length)break;
+				$connection=$channel->pop();
+				if((time()-$connection->lastPushTime())>$time){
+					$this->currentCount[$node]--;
+					$connection->close();
+				}else return $connection;
+			}	
+		}
         return $channel->pop();
     }
+	//得到node节点的连接数量
     protected function currentCount($node) {
         if(!isset($this->currentCount[$node])) $this->currentCount[$node]=0;
         return $this->currentCount[$node];
     }
+	//通过节点名查找channel
     protected function nodeFindChannel($node) {
         if(!isset($this->channel[$node])){
             if(!$this->config->exist($node)){
@@ -134,6 +158,7 @@ abstract class Pool{
     public function push(Connection $connection){
         $node=$connection->node();
         if(!$this->config->exist($node)||!isset($this->channel[$node]))return $this;
+		$connection->changePushTime();
         $this->channel[$node]->push($connection);
         return $this;
     }
@@ -176,11 +201,5 @@ abstract class Pool{
             }
         }
         return $nodes[$_k];
-    }
-    public function startClear() {
-        //\Swoole\Coroutine::getUid()
-    }
-    public function clear() {
-        
     }
 }
