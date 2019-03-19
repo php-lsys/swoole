@@ -19,7 +19,7 @@ trait ConnectionTrait{
      * 最后push时间
 　　　　　* @return int
      */
-	public function lastPushTime(){
+	public function lastPushTime():int{
 		return $this->lasttime;
 	}
 	/**

@@ -13,11 +13,6 @@ interface Connection{
      */
     public function reConnect():bool;
     /**
-     * 得到连接对象
-     * @return object
-     */
-    public function get();
-    /**
      * 得到连接池对象
      * @return Pool
      */
@@ -30,7 +25,7 @@ interface Connection{
      * 最后push时间
 　　　　　* @return int
      */
-	public function lastPushTime();
+	public function lastPushTime():int;
 	/**
      * 更改push时间
      */

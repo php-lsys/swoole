@@ -29,7 +29,7 @@ class Redis implements Connection{
     /**
      * @return \Swoole\Coroutine\Redis
      */
-    public function get()
+    public function redis()
     {
         return $this->redis;
     }

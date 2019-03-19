@@ -23,7 +23,7 @@ class MySQL implements Connection{
     /**
      * @return \Swoole\Coroutine\MySQL
      */
-    public function get()
+    public function mysql()
     {
         return $this->mysql;
     }

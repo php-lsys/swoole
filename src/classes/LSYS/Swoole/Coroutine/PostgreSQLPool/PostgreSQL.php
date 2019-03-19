@@ -23,7 +23,7 @@ class PostgreSQL implements Connection{
     /**
      * @return \Swoole\Coroutine\PostgreSQL
      */
-    public function get()
+    public function postgresql()
     {
         return $this->pgsql;
     }

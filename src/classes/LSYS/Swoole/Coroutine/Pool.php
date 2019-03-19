@@ -62,14 +62,14 @@ abstract class Pool{
     }
     /**
      * 从池中取得一个连接,记得归还
-     * @param string $node master* 为匹配配置中 master开头的配置 获取指定配置不要加*
+     * @param string $node master* 约定使用master开头的配置 获取指定配置不要加*
      * @return Connection
      */
     public function pop(string $node="master*"):Connection
     {
         if(substr($node, -1)=='*'){//按权重获取
             $_config=[];
-            $config=$this->config()->as_array();
+            $config=$this->config()->asArray();
             if(strlen($node)>1){
                 $_node=substr($node, 0,-1);
                 foreach ($config as $k=>$v){
@@ -124,9 +124,9 @@ abstract class Pool{
 			&&$config['keep_time']>0
 		){
 			while(true){
-				if($channel->length()<=$length)break;
+			    if($channel->length()<=$config['keep_size'])break;
 				$connection=$channel->pop();
-				if((time()-$connection->lastPushTime())>$time){
+				if((time()-$connection->lastPushTime())>$config['keep_time']){
 					$this->currentCount[$node]--;
 					$connection->close();
 				}else return $connection;
@@ -201,5 +201,17 @@ abstract class Pool{
             }
         }
         return $nodes[$_k];
+    }
+    /**
+     * 返回所有队列的统计数据,参见 channel 的 stats 返回
+     * @return number[]
+     */
+    public function stats(){
+        $out=array();
+        foreach ($this->channel as $k=>$v){
+            $out[$k]=$v->stats();
+            $out[$k]['current_num']=$this->currentCount($k);
+        }
+        return $out;
     }
 }

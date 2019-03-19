@@ -30,30 +30,6 @@ return array(
                 'database' => 'test',
             )
         ),
-        "slave2"=>array(
-            "size"=>1,//队列长度
-            "weight"=>1,//权重
-            "connection"=>array(
-                'host' => '127.0.0.1',
-                'port' => 3306,
-                'user' => 'root',
-                'password' => '110',
-                'fetch_mode' 		=> 1,
-                'database' => 'test',
-            )
-        ),
-        "slave3"=>array(
-            "size"=>1,//队列长度
-            "weight"=>1,//权重
-            "connection"=>array(
-                'host' => '127.0.0.1',
-                'port' => 3306,
-                'user' => 'root',
-                'password' => '110',
-                'fetch_mode' 		=> 1,
-                'database' => 'test',
-            )
-        ),
     ),
     "redis"=>array(
         "try"=>true,//发送错误重试次数,设置为TRUE为不限制
