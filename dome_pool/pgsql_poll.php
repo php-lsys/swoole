@@ -15,7 +15,7 @@ go(function () {
             $connection=$redis->pop();
             //辅助请求方法,改成下面形式 用于非事务请求时断链自动重启连接并请求
             $res=$redis->query($connection, function()use($connection){
-                return $connection->get()->query("select sleep(1)");
+                return $connection->postgresql()->query("select sleep(1)");
             });
             var_dump($res);
             //使用完还回线程池,必须手动还

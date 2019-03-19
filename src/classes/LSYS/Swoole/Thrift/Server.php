@@ -1,5 +1,5 @@
 <?php
-namespace Swoole\Thrift;
+namespace LSYS\Swoole\Thrift;
 use Thrift;
 use Thrift\Server\TServerTransport;
 use Thrift\Factory\TTransportFactory;

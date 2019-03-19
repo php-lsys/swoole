@@ -20,7 +20,7 @@
  * @package thrift.transport
  */
 
-namespace Swoole\Thrift;
+namespace LSYS\Swoole\Thrift;
 
 use Thrift\Transport\TSocket;
 use Thrift\Server\TServerTransport;

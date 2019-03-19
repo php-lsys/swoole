@@ -1,6 +1,6 @@
 <?php
 
-namespace Swoole\Thrift;
+namespace LSYS\Swoole\Thrift;
 use Thrift\Transport\TFramedTransport;
 use Thrift\Factory\TTransportFactory;
 class FramedTransportFactory extends TTransportFactory{
