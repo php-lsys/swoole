@@ -1,9 +1,9 @@
 <?php
-namespace LSYS\Swoole\Thrift;
+namespace LSYS\Swoole\Thrift\Server;
 use Thrift;
 use Thrift\Exception\TTransportException;
 
-class Socket extends Thrift\Transport\TFramedTransport
+class TSwooleFramedTransport extends Thrift\Transport\TFramedTransport
 {
     public $buffer = '';
     public $offset = 0;
@@ -12,22 +12,22 @@ class Socket extends Thrift\Transport\TFramedTransport
     protected $read_ = true;
     protected $rBuf_ = '';
     protected $wBuf_ = '';
-
+    
     public function setHandle($fd)
     {
         $this->fd = $fd;
     }
-
-    function readFrame()
+    
+    protected function readFrame()
     {
         $buf = $this->_read(4);
         $val = unpack('N', $buf);
         $sz = $val[1];
-
+        
         $this->rBuf_ = $this->_read($sz);
     }
-
-    public function _read($len)
+    
+    protected function _read($len)
     {
         if (strlen($this->buffer) - $this->offset < $len)
         {
@@ -37,12 +37,12 @@ class Socket extends Thrift\Transport\TFramedTransport
         $this->offset += $len;
         return $data;
     }
-
+    
     public function read($len) {
         if (!$this->read_) {
             return $this->_read($len);
         }
-
+        
         if (Thrift\Factory\TStringFuncFactory::create()->strlen($this->rBuf_) === 0) {
             $this->readFrame();
         }
@@ -52,18 +52,18 @@ class Socket extends Thrift\Transport\TFramedTransport
             $this->rBuf_ = null;
             return $out;
         }
-
+        
         // Return TStringFuncFactory::create()->substr
         $out = Thrift\Factory\TStringFuncFactory::create()->substr($this->rBuf_, 0, $len);
         $this->rBuf_ = Thrift\Factory\TStringFuncFactory::create()->substr($this->rBuf_, $len);
         return $out;
     }
-
+    
     public function write($buf, $len = NULL)
     {
         $this->wBuf_ .= $buf;
     }
-
+    
     function flush()
     {
         $out = pack('N', strlen($this->wBuf_));

@@ -11,7 +11,6 @@ class MySQLPool extends Pool{
     /**
      * @param \LSYS\Swoole\Coroutine\MySQLPool\MySQL $connect 
      * @param mixed $result 
-     * @param string $mysql 
      */
     protected function checkReQuery(Connection $connect,$result):bool{
         if($result==true)return false;

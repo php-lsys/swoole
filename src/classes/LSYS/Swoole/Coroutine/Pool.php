@@ -38,9 +38,9 @@ abstract class Pool{
      */
     abstract protected function createConnection($node):Connection;
     /**
-     * 检测请求结果
+     * 检测请求结果,返回true 重试请求,返回false不重试请求
      * @param Connection $connect
-     * @param mixed $result
+     * @param mixed|\Exception $result 请求结果或请求执行时异常
      * @return bool
      */
     abstract protected function checkReQuery(Connection $connect,$result):bool;
@@ -52,8 +52,13 @@ abstract class Pool{
      */
     public function query(Connection $connect,callable $callback){
         while (true) {
-            $res=call_user_func($callback,$connect);
-            if(!$this->checkReQuery($connect,$res))return $res;
+            try{
+                $res=call_user_func($callback,$connect);
+            }catch (\Exception $e){//抛出异常
+                if(!$this->checkReQuery($connect,$e)) throw $e;//不重试 继续抛出异常
+            }
+            if(isset($e))unset($e);
+            else if(!$this->checkReQuery($connect,$res))return $res;
             $sleep=$this->config->get("sleep",0);
             if($sleep)\co::sleep($sleep);
             if(!$this->isTryConnect())break;
