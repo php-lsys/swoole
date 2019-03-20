@@ -33,7 +33,7 @@ class Client implements Connection{
     {
         $this->close();
         try{
-         $this->connect();
+            $this->transport->open();
         }catch (\Exception $e){
             \LSYS\Loger\DI::get()->loger()->add(\LSYS\Loger::ERROR,$e);
             return false;

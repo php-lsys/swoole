@@ -11,13 +11,13 @@ go(function () {
     $connect=$client_pool->pop("app1*");
     
     //协议要跟服务器对上
-    $protocol = new TJSONProtocol($connect->transport());
-    $client = new NewsClient($protocol);
-    
-    $client_pool->query($connect, function()use($client){
+    $res=$client_pool->query($connect, function()use($connect){
+        $protocol = new TJSONProtocol($connect->transport());
+        $client = new NewsClient($protocol);
         $res=$client->test("fdasdfaddd");
         return $res;
     });
+    var_dump($res);
     
     $client_pool->push($connect);
      

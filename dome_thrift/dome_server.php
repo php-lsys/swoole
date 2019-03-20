@@ -1,8 +1,10 @@
 <?php
 use Information\NewsProcessor;
 use Thrift\Factory\TJSONProtocolFactory;
+use LSYS\Loger\Handler\Stdout;
 require __DIR__."/boot.php";
 
+LSYS\Loger\DI::get()->loger()->addHandler(new Stdout());
 
 $handler = new \Services\Information\NewsHandler();
 $processor = new NewsProcessor($handler);
