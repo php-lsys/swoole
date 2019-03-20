@@ -13,6 +13,7 @@ class RedisPool extends Pool{
      * @see \LSYS\Swoole\Coroutine\Pool::checkReQuery()
      */
     protected function checkReQuery(Connection $connect,$result):bool{
+        if($result instanceof \Exception) return false;
         $no=$connect->getErrno();
         if(!$no||$no=='0')return false;
         while ($no=='1') {

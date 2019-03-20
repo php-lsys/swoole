@@ -13,7 +13,7 @@ class MySQLPool extends Pool{
      * @param mixed $result 
      */
     protected function checkReQuery(Connection $connect,$result):bool{
-        if($result==true)return false;
+        if($result||is_array($result))return false;
         $mysql=$connect->get();
         if($mysql->errno=='2006'
             ||$mysql->errno=='2013'

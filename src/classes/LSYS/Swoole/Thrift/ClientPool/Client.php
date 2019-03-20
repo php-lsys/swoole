@@ -19,20 +19,29 @@ class Client implements Connection{
             'host' => '127.0.0.1',
             'port' => 8099,
         ];;
+        $this->connect();
     }
     protected function connect(){
         $socket = new TSocket($this->config['host'], $this->config['port']);
         $this->transport= new TFramedTransport($socket);
         $this->transport->open();
     }
+    public function transport(){
+        return $this->transport;
+    }
     public function reConnect():bool
     {
         $this->close();
-        $this->connect();
+        try{
+         $this->connect();
+        }catch (\Exception $e){
+            \LSYS\Loger\DI::get()->loger()->add(\LSYS\Loger::ERROR,$e);
+            return false;
+        }
         return true;
     }
 	public function close()
     {
-        $this->transport->close(); 
+        @$this->transport->close(); 
     }
 }

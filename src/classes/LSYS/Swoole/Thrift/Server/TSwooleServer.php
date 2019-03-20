@@ -2,8 +2,6 @@
 namespace LSYS\Swoole\Thrift\Server;
 use Thrift\Factory\TTransportFactory;
 use Thrift\Factory\TProtocolFactory;
-use LSYS\Swoole\Thrift\Socket;
-use Thrift\Transport\TFramedTransport;
 /**
  * Simple implemtation of a Thrift server.
  *
@@ -63,7 +61,7 @@ class TSwooleServer
             $this->outputProtocolFactory_ = $outputProtocolFactory;
     }
     function config($config){
-        $this->config=$config;
+        $this->config=array_merge($this->config,$config);
         return $this;
     }
     /**
@@ -99,10 +97,7 @@ class TSwooleServer
         try {
             $this->processor_->process($inputProtocol, $outputProtocol);
         } catch (\Exception $e) {
-            $this->loger($e);
+            \LSYS\Loger\DI::get()->loger()->add(\LSYS\Loger::ERROR,$e);
         }
-    }
-    protected function loger($e) {
-        echo 'CODE:' . $e->getCode() . ' MESSAGE:' . $e->getMessage() . "\n" . $e->getTraceAsString();
     }
 }

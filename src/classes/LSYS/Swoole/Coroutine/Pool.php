@@ -22,7 +22,6 @@ abstract class Pool{
     protected $_try;
     public function __construct(Config $config) {
         $this->config=$config;
-        if(!$config->exist("master"))throw new Exception("miss master config");
         $this->_try=$this->config->get("try",true);
     }
     /**
@@ -85,6 +84,7 @@ abstract class Pool{
             }else $_config=$config;
             $filter_key=array();
             $channel=null;//第一个从权重中拿到的 channel
+            if(count($_config)==0)$this->nodeCheck($node);
             foreach ($_config as $v){
                 foreach ($filter_key as $vv)unset($_config[$vv]);
                 $is_last=count($_config)==1;
@@ -116,6 +116,7 @@ abstract class Pool{
 				}
             }
         }
+        
 		//不为空，丢弃超时连接，感觉没什么卵用，好像很多框架都有这个，补上
 		//如果有设置的话，才进行操作。
 		$config=$this->config->get($node);
@@ -144,12 +145,15 @@ abstract class Pool{
         if(!isset($this->currentCount[$node])) $this->currentCount[$node]=0;
         return $this->currentCount[$node];
     }
+    protected function nodeCheck($node) {
+        if(empty($node)||!$this->config->exist($node)){
+            throw new Exception(strtr("node[:node] not find",[":node"=>$node]));
+        }
+    }
 	//通过节点名查找channel
     protected function nodeFindChannel($node) {
         if(!isset($this->channel[$node])){
-            if(!$this->config->exist($node)){
-                throw new Exception(strtr("node[:node] not find",[":node"=>$node]));
-            }
+            $this->nodeCheck($node);
             $size=(int)$this->config->get($node.".size",1);
             $this->channel[$node] = new \Swoole\Coroutine\Channel($size);
         }
