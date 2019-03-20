@@ -26,6 +26,6 @@ class ClientPool extends Pool{
             }
             if($succ)return $succ;
         }
-        if($result instanceof \Exception)return false;
+        return false;
     }
 }
