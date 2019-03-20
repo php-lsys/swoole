@@ -16,6 +16,7 @@ class ClientPool extends Pool{
         if($result instanceof TTransportException||(
             $result instanceof TException &&$result->getCode()=='110'
          )){
+            //if(strpos($result->getMessage(), "TSocket: timed out")!==false)return false;
             while (true) {
                 $succ=$connect->reConnect();
                 if($succ)break;
