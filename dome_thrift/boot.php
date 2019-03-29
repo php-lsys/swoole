@@ -7,5 +7,6 @@ LSYS\Config\File::dirs(array(
     __DIR__."/config",
 ));
 $loader = new ThriftClassLoader();
-$loader->registerDefinition('Information',  __DIR__.'/gen-php');
+$loader->registerDefinition('Information',  __DIR__.'/src/gen-php');
+$loader->registerDefinition('Shared',  __DIR__.'/src/gen-php');
 $loader->register();
