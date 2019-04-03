@@ -14,10 +14,10 @@ class MySQLPool extends Pool{
      */
     protected function checkReQuery(Connection $connect,$result):bool{
         if($result||is_array($result))return false;
-        $mysql=$connect->get();
+        $mysql=$connect->mysql();
         if($mysql->errno=='2006'
             ||$mysql->errno=='2013'
-            ||$mysql->errCode=='5001'
+            ||(isset($mysql->errCode)&&$mysql->errCode=='5001')
             ){
             while (true) {
                 $succ=$connect->reConnect();
