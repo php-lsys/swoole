@@ -10,6 +10,7 @@ return array(
 			//"keep_time"=>300,//空闲超过300关闭链接
             "weight"=>1,//权重
             "connection"=>array(//这里配置根据每个连接不同自定义.这里是MYSQL配置
+                //'charset' => 'utf8',//字符编码
                 'host' => '127.0.0.1',
                 'port' => 3306,
                 'user' => 'root',
