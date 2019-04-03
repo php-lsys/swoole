@@ -74,31 +74,37 @@ abstract class Pool{
         if(substr($node, -1)=='*'){//按权重获取
             $_config=[];
             $config=$this->config()->asArray();
-            if(strlen($node)>1){
-                $_node=substr($node, 0,-1);
+            $node=substr($node, 0,-1);
+            if(strlen($node)>0){
                 foreach ($config as $k=>$v){
-                    if(isset($v['connection'])&&strpos($k, $_node)===0){
+                    if(isset($v['connection'])&&strpos($k, $node)===0){
                         $_config[$k]=$v;
                     }
                 }
-            }else $_config=$config;
+            }else{
+                foreach ($config as $k=>$v){
+                    if(isset($v['connection'])){
+                        $_config[$k]=$v;
+                    }
+                }
+            }
             $filter_key=array();
             $channel=null;//第一个从权重中拿到的 channel
             if(count($_config)==0)$this->nodeCheck($node);
             foreach ($_config as $v){
                 foreach ($filter_key as $vv)unset($_config[$vv]);
                 $is_last=count($_config)==1;
-                if($is_last)$_node=key($_config);
+                if($is_last)$node=key($_config);
                 else {
-                    $_node=$this->configWeightGet($_config);
-                    $filter_key[]=$_node;
+                    $node=$this->configWeightGet($_config);
+                    $filter_key[]=$node;
                 }
-                $_channel=$this->nodeFindChannel($_node);
+                $_channel=$this->nodeFindChannel($node);
                 if(!$channel)$channel=$_channel;
                 if($_channel->isEmpty()){
-                    if($this->currentCount($_node)<$_channel->capacity){
-                        $this->currentCount[$_node]++;
-                        return $this->createConnection($_node);
+                    if($this->currentCount($node)<$_channel->capacity){
+                        $this->currentCount[$node]++;
+                        return $this->createConnection($node);
                     }else{
                         if($is_last)break;//
                     }
@@ -116,7 +122,6 @@ abstract class Pool{
 				}
             }
         }
-        
 		//不为空，丢弃超时连接，感觉没什么卵用，好像很多框架都有这个，补上
 		//如果有设置的话，才进行操作。
 		$config=$this->config->get($node);
