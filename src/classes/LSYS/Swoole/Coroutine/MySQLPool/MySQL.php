@@ -56,6 +56,9 @@ class MySQL implements Connection{
             'database' => 'test',
         ];
         $re=@$this->mysql->connect($config);
+        if ($config['charset']) {
+            @$this->mysql->query("SET NAMES ".addslashes($config['charset']));
+        }
         if(!$re)throw new \LSYS\Exception($this->mysql->connect_error,$this->mysql->connect_errno);
         return $re;
     }
