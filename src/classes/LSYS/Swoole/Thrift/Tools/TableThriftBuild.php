@@ -33,8 +33,8 @@ abstract class TableThriftBuild{
      * @param string $table
      * @return string
      */
-    protected function fileName($table){
-        return "table_".$table;
+    protected function fileName(){
+        return "table";
     }
     /**
      * Thrift名生成
@@ -136,6 +136,14 @@ abstract class TableThriftBuild{
         $namespace=$this->_namespace;
         $tp=$this->tablePrefix();
         $tables=$this->listTables();
+        $body=[];
+        
+        $names=[];
+        foreach ($namespace as $v){
+            $names[]="namespace {$v}";
+        }
+        $body[]=implode("\n", $names);
+        
         foreach ($tables as $table){
             if (!empty($tp)){
                 if(strpos($table, $tp)!==0){
@@ -150,15 +158,14 @@ abstract class TableThriftBuild{
             $column=$this->createColumn($columnset);
             $name=$this->ThriftName($table_name);
             $doc="struct {$name}{\n{$column}\n}";
-            $filename=$this->fileName($table_name);
-            $names=[];
-            foreach ($namespace as $v){
-                $names[]="namespace {$v}";
-            }
-            $names=implode("\n", $names);
-            file_put_contents($class_dir.$filename.".thrift", $names."\n".$doc);
-            $this->message($table," create success");
+            
+            $body[]="//table: ".$table_name."\n\n".$doc;
+            $this->message($table," create bulid");
         }
+        $filename=$this->fileName();
+        
+        file_put_contents($class_dir.$filename.".thrift",implode("\n\n\n", $body) );
+        $this->message($table," create success");
     }
     /**
      * 表列表
