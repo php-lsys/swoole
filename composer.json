@@ -2,7 +2,7 @@
 	"name": "lsys/swoole",
 	"type" : "library",
 	"license": "Apache-2.0",
-	"version" : "2.0.5",
+	"version" : "2.0.6",
 	"description" : "lsys module swoole",
 	"require" : {
 		"lsys/core" : "~2.0.0",
