@@ -22,8 +22,8 @@ struct ResultAd {
 
 service News  extends shared.ShareService
 {
-	string test(1:string test);
-	string test1(1:string test);
-	string test2(1:string test);
-	ResultAd ad_lists(1:AdParam param);
+	string test(1:string test)throws (1: shared.ResultException e);
+	string test1(1:string test)throws (1: shared.ResultException e);
+	string test2(1:string test)throws (1: shared.ResultException e);
+	ResultAd ad_lists(1:AdParam param)throws (1: shared.ResultException e);
 }

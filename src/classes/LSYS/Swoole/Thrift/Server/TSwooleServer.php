@@ -2,6 +2,10 @@
 namespace LSYS\Swoole\Thrift\Server;
 use Thrift\Factory\TTransportFactory;
 use Thrift\Factory\TProtocolFactory;
+use Thrift\Exception\TException;
+use Thrift\Exception\TApplicationException;
+use Thrift\Type\TMessageType;
+use Thrift\Type\TType;
 /**
  * Simple implemtation of a Thrift server.
  *
@@ -94,7 +98,29 @@ class TSwooleServer
         try {
             $this->processor_->process($inputProtocol, $outputProtocol);
         } catch (\Exception $e) {
-            \LSYS\Loger\DI::get()->loger()->add(\LSYS\Loger::ERROR,$e);
+            $rseqid=0;
+            $fname=null;
+            $trace=$e->getTrace();
+            if(is_array($trace)){
+                array_pop($trace);
+                $trace=array_pop($trace);
+                if(strpos($trace['function'], 'process_')===0){
+                    $fname=substr($trace['function'], 8);
+                    $rseqid=array_shift($trace['args']);
+                }
+            }
+            if(!$e instanceof TException||!method_exists($e, "write")){
+                \LSYS\Loger\DI::get()->loger()->add(\LSYS\Loger::ERROR,$e);
+                $message=$e->getMessage();
+                if(\LSYS\Core::$environment!=self::PRODUCT&&method_exists($e, "getTraceAsString")){
+                    $message.=$e->getTraceAsString();//非线上环境 把堆栈输出,方便调试
+                }
+                $e = new TApplicationException($message, TApplicationException::UNKNOWN);
+            }
+            $outputProtocol->writeMessageBegin($fname, TMessageType::EXCEPTION, $rseqid);
+            $e->write($outputProtocol);
+            $outputProtocol->writeMessageEnd();
+            $outputProtocol->getTransport()->flush();
         }
     }
 }
