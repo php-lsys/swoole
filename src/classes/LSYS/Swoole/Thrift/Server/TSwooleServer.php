@@ -68,14 +68,11 @@ class TSwooleServer
      * Serves the server. This should never return
      * unless a problem permits it to do so or it
      * is interrupted intentionally
-     *
-     * @abstract
-     * @return void
      */
     public function serve(){
         $this->server_->on('receive', [$this, 'onReceive']);
         $this->server_->set($this->config+(array)$this->server_->setting);
-        $this->server_->start();
+        return $this->server_->start();
     }
     /**
      * Stops the server serving
