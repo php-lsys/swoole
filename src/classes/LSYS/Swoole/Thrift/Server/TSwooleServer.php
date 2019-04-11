@@ -111,9 +111,9 @@ class TSwooleServer
             }
             if(!$e instanceof TException||!method_exists($e, "write")){
                 \LSYS\Loger\DI::get()->loger()->add(\LSYS\Loger::ERROR,$e);
-                $message=$e->getMessage();
-                if(\LSYS\Core::$environment!=self::PRODUCT&&method_exists($e, "getTraceAsString")){
-                    $message.=$e->getTraceAsString();//非线上环境 把堆栈输出,方便调试
+                $message=$e->getMessage().":".$e->getCode();
+                if(\LSYS\Core::$environment!=\LSYS\Core::PRODUCT&&method_exists($e, "getTraceAsString")){
+                    $message.="\n".$e->getTraceAsString();//非线上环境 把堆栈输出,方便调试
                 }
                 $e = new TApplicationException($message, TApplicationException::UNKNOWN);
             }
