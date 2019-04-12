@@ -13,10 +13,10 @@ class ClientProxy{
             if ($client_proxy) {
                 return new ClientProxy($client_proxy->getTransport(),$client);
             }
-            return ClientProxy::factory($client, $config);
+            return ClientProxy::create($client, $config);
         };
     }
-    public static function factory($client,Config $config) {
+    public static function create($client,Config $config) {
         $config=$config->asArray()+array(
             'socket'=>TSocket::class,
             'args'=>array(
@@ -28,7 +28,6 @@ class ClientProxy{
         return new self($transport, $client);
     }
     protected $client;
-    protected $transport;
     protected $protocol;
     public function __construct(TTransport $transport,$client,callable $protocol=null) {
         if(is_callable($protocol)){
@@ -42,14 +41,14 @@ class ClientProxy{
         }else{
             $this->client=(new \ReflectionClass($client))->newInstance($protocol);
         }
-        $this->transport=$transport;
+        $this->protocol=$protocol;
     }
     public function getTransport(){
-        return $this->transport;
+        return $this->protocol->getTransport();
     }
     public function __call($method,$param_arr) {
-        if (!$this->transport->isOpen()) {
-            $this->transport->open();
+        if (!$this->protocol->getTransport()->isOpen()) {
+            $this->protocol->getTransport()->open();
         }
         return call_user_func_array([$this->client,$method], $param_arr);
     }
