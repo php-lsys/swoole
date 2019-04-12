@@ -9,9 +9,8 @@ return array(
 			//"keep_size"=>1,//空闲时保留链接数量
 			//"keep_time"=>300,//空闲超过300关闭链接
             "weight"=>1,//权重
-            "connection"=>array(//这里配置根据每个连接不同自定义.这里是MYSQL配置
-                'host' => '127.0.0.1',
-                'port' => 8099,
+            "connection"=>array(
+                'args'=>['127.0.0.1',8099]
             )
         ),
     ),

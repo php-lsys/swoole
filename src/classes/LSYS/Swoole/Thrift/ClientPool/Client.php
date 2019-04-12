@@ -16,13 +16,13 @@ class Client implements Connection{
         $this->node=$node;
         $this->config=$config+
         [
-            'host' => '127.0.0.1',
-            'port' => 8099,
-        ];;
+            'socket'=>TSocket::class,
+            'args'=>['127.0.0.1',8099]
+        ];
         $this->connect();
     }
     protected function connect(){
-        $socket = new TSocket($this->config['host'], $this->config['port']);
+        $socket = (new \ReflectionClass($this->config['socket']))->newInstanceArgs($this->config['args']);
         $this->transport= new TFramedTransport($socket);
         $this->transport->open();
     }
