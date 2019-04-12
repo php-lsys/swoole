@@ -43,19 +43,19 @@ class TSwooleFramedTransport extends Thrift\Transport\TFramedTransport
             return $this->_read($len);
         }
         
-        if (Thrift\Factory\TStringFuncFactory::create()->strlen($this->rBuf_) === 0) {
+        if (\Thrift\Factory\TStringFuncFactory::create()->strlen($this->rBuf_) === 0) {
             $this->readFrame();
         }
         // Just return full buff
-        if ($len >= Thrift\Factory\TStringFuncFactory::create()->strlen($this->rBuf_)) {
+        if ($len >= \Thrift\Factory\TStringFuncFactory::create()->strlen($this->rBuf_)) {
             $out = $this->rBuf_;
             $this->rBuf_ = null;
             return $out;
         }
         
         // Return TStringFuncFactory::create()->substr
-        $out = Thrift\Factory\TStringFuncFactory::create()->substr($this->rBuf_, 0, $len);
-        $this->rBuf_ = Thrift\Factory\TStringFuncFactory::create()->substr($this->rBuf_, $len);
+        $out = \Thrift\Factory\TStringFuncFactory::create()->substr($this->rBuf_, 0, $len);
+        $this->rBuf_ = \Thrift\Factory\TStringFuncFactory::create()->substr($this->rBuf_, $len);
         return $out;
     }
     
