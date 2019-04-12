@@ -33,6 +33,8 @@ class TSwooleSocket extends TTransport
   protected $sock_type_;
   protected $config_ =array(
       'connect_timeout' => 8.0,
+      'write_timeout'     => 6.0,
+      'read_timeout'     => 6.0,
       'open_length_check'     => 1,
       'package_length_type'   => 'N',
       'package_length_offset' => 0,       //第N个字节是包长度的值
@@ -84,29 +86,6 @@ class TSwooleSocket extends TTransport
   {
     $this->handle_ = $handle;
   }
-
-  /**
-   * Sets the send timeout.
-   *
-   * @param int $timeout  Timeout in milliseconds.
-   */
-  public function setSendTimeout($timeout)
-  {
-    $this->config_['write_timeout']=$timeout*1000;
-    if(is_object($this->handle_))$this->handle_->set($this->config_);
-  }
-
-  /**
-   * Sets the receive timeout.
-   *
-   * @param int $timeout  Timeout in milliseconds.
-   */
-  public function setRecvTimeout($timeout)
-  {
-     $this->config_['read_timeout']=$timeout*1000;
-     if(is_object($this->handle_))$this->handle_->set($this->config_);
-  }
-
   /**
    * Sets debugging output on or off
    *
