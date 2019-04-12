@@ -8,7 +8,7 @@ class DI extends \LSYS\DI{
      *
      * @var string default config
      */
-    public static $config = 'thrift.client';
+    public static $config = 'thrift.client_pool';
     /**
      * @return static
      */

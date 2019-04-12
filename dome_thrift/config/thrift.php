@@ -1,6 +1,6 @@
 <?php
 return array(
-    "client"=>array(
+    "client_pool"=>array(
         "try"=>true,//发送错误重试次数,设置为TRUE为不限制
         "sleep"=>1,//断开连接重连暂停时间
         "app1_1"=>array(
