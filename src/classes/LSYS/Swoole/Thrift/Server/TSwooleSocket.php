@@ -30,6 +30,7 @@ class TSwooleSocket extends TTransport
    * @var int
    */
   protected $port_ = '9090';
+  protected $sock_type_;
   protected $config_ =array(
       'connect_timeout' => 8.0,
       'open_length_check'     => 1,
@@ -66,9 +67,11 @@ class TSwooleSocket extends TTransport
   public function __construct($host='localhost',
                               $port=9090,
                               $config=array(),
+                              $sock_type=SWOOLE_SOCK_TCP,
                               $debugHandler=null) {
     $this->host_ = $host;
     $this->port_ = $port;
+    $this->sock_type_ = $sock_type;
     $this->config_=$config+$this->config_;
     $this->debugHandler_ = $debugHandler ? $debugHandler : 'error_log';
   }
@@ -161,7 +164,7 @@ class TSwooleSocket extends TTransport
       throw new TTransportException('Cannot open without port', TTransportException::NOT_OPEN);
     }
     
-    $this->handle_ = new \Swoole\Coroutine\Client(SWOOLE_SOCK_TCP);
+    $this->handle_ = new \Swoole\Coroutine\Client($this->sock_type_);
     $this->handle_->set($this->config_);
     if(!$this->handle_->connect($this->host_, $this->port_,$this->config_['connect_timeout'])){
         $errno=$this->handle_->errCode;
