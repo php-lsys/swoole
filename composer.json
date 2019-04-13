@@ -2,7 +2,7 @@
 	"name": "lsys/swoole",
 	"type" : "library",
 	"license": "Apache-2.0",
-	"version" : "2.0.10",
+	"version" : "2.0.11",
 	"description" : "lsys module swoole",
 	"require" : {
 		"lsys/core" : "~2.0.0",
@@ -11,7 +11,6 @@
 	},
 	"require-dev" : {
 		"eaglewu/swoole-ide-helper" : "dev-master",
-		"apache/thrift": "^0.11.0",
 		"phpunit/phpunit" : "~7.1.5",
 		"php-coveralls/php-coveralls":"~v2.0.0"
 	},
@@ -20,7 +19,7 @@
     },
 	"autoload" : {
 		"psr-4" : {
-			"LSYS\\" : "src/classes/LSYS/"
+			"LSYS\\Swoole\\" : "src/classes/LSYS/Swoole/"
 		}
 	}
 }
