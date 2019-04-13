@@ -2,6 +2,7 @@
 namespace LSYS\Swoole\Coroutine\RedisPool;
 use LSYS\Swoole\Coroutine\Connection;
 use LSYS\Swoole\Coroutine\RedisPool;
+use LSYS\Swoole\Exception;
 /**
  * @method \LSYS\Swoole\Coroutine\RedisPool getPool()
  */
@@ -20,7 +21,7 @@ class Redis implements Connection{
     protected function create(){
         $this->close();
         if (class_exists(\Swoole\Coroutine\Redis::class)) {
-            $this->redis=new \Swoole\Coroutine\Redis();
+            $this->redis=new \LSYS\Swoole\Coroutine\Redis($this->config);
         }else{
             $this->redis=new \Redis();
             $this->isswoole=0;
@@ -62,24 +63,22 @@ class Redis implements Connection{
      * @return bool
      */
     protected function connect():bool{
-        $_config=$this->config+array(
-            'host'             	=> 'localhost',
-            'port'             	=> 6379,
-            'timeout'			=> '60',
-            'connect_timeout'	=> '60',
-            'serialize'			=> false,
-            'reconnect'			=> '1',
-            'db'				=> NULL,
-        );
-        $res=$this->redis->connect($_config['host'],$_config['port']);
-        if(!$res)throw new \LSYS\Exception($this->getError(),$this->getErrno());
-        if(method_exists($this->redis, 'setOptions')){
-            $this->redis->setOptions(array_intersect_key($_config, array_flip(array(
-                'timeout','connect_timeout','serialize','reconnect',
-            ))));
-        }
-        if (isset($_config['db']))$this->redis->select($_config['db']);
-        return $res;
+        if ($this->redis instanceof \Redis) {
+            $_config=$this->config+array(
+                'host'             	=> 'localhost',
+                'port'             	=> 6379,
+                'timeout'			=> '60',
+                'connect_timeout'	=> '60',
+                'serialize'			=> false,
+                'reconnect'			=> '1',
+                'db'				=> NULL,
+            );
+            $res=$this->redis->connect($_config['host'],$_config['port']);
+            if(!$res)throw new Exception($this->redis->getLastError());
+            if (isset($_config['db']))$this->redis->select($_config['db']);
+            return $res;
+       }
+       return $this->redis->connectFromConfig();
     }
     public function close()
     {

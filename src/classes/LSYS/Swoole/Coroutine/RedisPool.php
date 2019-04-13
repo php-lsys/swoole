@@ -1,5 +1,6 @@
 <?php
 namespace LSYS\Swoole\Coroutine;
+use LSYS\Swoole\Exception;
 /**
  * @method \LSYS\Swoole\Coroutine\RedisPool\Redis pop($node="master*")
  * @method static push(\LSYS\Swoole\Coroutine\RedisPool\Redis $connection)
@@ -24,6 +25,6 @@ class RedisPool extends Pool{
             if(!$this->isTryConnect())break;
         }
         if($succ)return $succ;
-        throw new \LSYS\Exception($connect->getError(),$no);
+        throw new Exception($connect->getError(),$no);
     }
 }

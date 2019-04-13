@@ -1,5 +1,6 @@
 <?php
 namespace LSYS\Swoole\Coroutine;
+use LSYS\Swoole\Exception;
 /**
  * @method \LSYS\Swoole\Coroutine\ClientPool\Client pop($node)
  * @method static push(\LSYS\Coroutine\Coroutine\ClientPool\Client $connection)
@@ -18,6 +19,6 @@ class ClientPool extends Pool{
             if(!$this->isTryConnect())break;
         }
         if($succ)return $succ;
-        throw new \LSYS\Exception($connect->errMsg(),10087);
+        throw new Exception($connect->errMsg(),10087);
     }
 }

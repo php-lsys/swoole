@@ -1,7 +1,7 @@
 <?php
 namespace LSYS\Swoole\Coroutine;
 use LSYS\Config;
-use LSYS\Exception;
+use LSYS\Swoole\Exception;
 abstract class Pool{
     /**
      * @var Config
@@ -175,6 +175,11 @@ abstract class Pool{
         $this->channel[$node]->push($connection);
         return $this;
     }
+    /**
+     * 重池中减少一个连接的计数
+     * 用于抛弃一个连接时候使用
+     * @param Connection $connection
+     */
     public function free(Connection $connection) {
         $node=$connection->node();
         if(isset($this->currentCount[$node]))$this->currentCount[$node]--;

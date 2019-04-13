@@ -14,11 +14,11 @@ class PostgreSQL implements Connection{
         $this->node=$node;
         $this->config=$config;
         $this->create();
-        $this->connect();
+        $this->pgsql->connectFromConfig();
     }
     protected function create(){
 		$this->close();
-        $this->pgsql=new \Swoole\Coroutine\PostgreSQL();
+        $this->pgsql=new \LSYS\Swoole\Coroutine\PostgreSQL();
     }
     /**
      * @return \Swoole\Coroutine\PostgreSQL
@@ -36,26 +36,11 @@ class PostgreSQL implements Connection{
         //重启数据库,原对象不能再连接上了.所以重新NEW
         $this->create();
         try{
-            return $this->connect();//重连原数据库
+            return $this->pgsql->connectFromConfig();//重连原数据库
         }catch(\Exception $e){
             \LSYS\Loger\DI::get()->loger()->add(\LSYS\Loger::ERROR,$e);
         }
         return false;
-    }
-    /**
-     * @param \Swoole\Coroutine\PostgreSQL $pgsql
-     * @return bool
-     */
-    protected function connect():bool{
-        $config=$this->config+
-        [
-            'dsn' => 'host=127.0.0.1 port=5432 dbname=test user=root password=',
-        ];
-        $conn  = $this->pgsql -> connect ($config['dsn']);
-        if(!$conn){
-            throw new \LSYS\Exception($this->pgsql->error,$this->pgsql->errno);
-        }
-        return $conn;
     }
     public function close()
     {

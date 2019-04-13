@@ -14,14 +14,14 @@ class MySQL implements Connection{
         $this->node=$node;
         $this->config=$config;
         $this->create();
-        $this->connect();
+        $this->mysql->connectFromConfig();
     }
     protected function create(){
 		$this->close();
-        $this->mysql=new \Swoole\Coroutine\MySQL();
+        $this->mysql=new \LSYS\Swoole\Coroutine\MySQL();
     }
     /**
-     * @return \Swoole\Coroutine\MySQL
+     * @return \LSYS\Swoole\Coroutine\MySQL
      */
     public function mysql()
     {
@@ -36,31 +36,11 @@ class MySQL implements Connection{
         //重启数据库,原对象不能再连接上了.所以重新NEW
         $this->create();
         try{
-            return $this->connect();//重连原数据库
+            return $this->mysql->connectFromConfig();//重连原数据库
         }catch(\Exception $e){
             \LSYS\Loger\DI::get()->loger()->add(\LSYS\Loger::ERROR,$e);
         }
         return false;
-    }
-    /**
-     * @return bool
-     */
-    protected function connect():bool{
-        $config=$this->config+
-        [
-            'host' => '127.0.0.1',
-            'port' => 3306,
-            'user' => 'root',
-            'password' => '110',
-            'fetch_mode' 		=> 1,
-            'database' => 'test',
-        ];
-        $re=@$this->mysql->connect($config);
-        if (!empty($config['charset'])) {
-            @$this->mysql->query("SET NAMES ".addslashes($config['charset']));
-        }
-        if(!$re)throw new \LSYS\Exception($this->mysql->connect_error,$this->mysql->connect_errno);
-        return $re;
     }
 	public function close()
     {

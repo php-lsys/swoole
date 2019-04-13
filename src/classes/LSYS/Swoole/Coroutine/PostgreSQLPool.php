@@ -1,5 +1,6 @@
 <?php
 namespace LSYS\Swoole\Coroutine;
+use LSYS\Swoole\Exception;
 /**
  * @method \LSYS\Swoole\Coroutine\PostgreSQLPool\PostgreSQL pop($node="master*")
  * @method static push(\LSYS\Swoole\Coroutine\PostgreSQLPool\PostgreSQL $connection)
@@ -15,6 +16,6 @@ class PostgreSQLPool extends Pool{
      */
     protected function checkReQuery(Connection $connect,$result):bool{
         if($result)return false;
-        throw new \LSYS\Exception("pg query error");
+        throw new Exception("pg query error");
     }
 }

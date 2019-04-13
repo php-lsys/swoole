@@ -1,5 +1,6 @@
 <?php
 namespace LSYS\Swoole\Coroutine;
+use LSYS\Swoole\Exception;
 /**
  * @method \LSYS\Swoole\Coroutine\MySQLPool\MySQL pop($node="master*")
  * @method static push(\LSYS\Swoole\Coroutine\MySQLPool\MySQL $connection)
@@ -28,6 +29,6 @@ class MySQLPool extends Pool{
             }
             if($succ)return $succ;
         }
-        throw new \LSYS\Exception($mysql->error,$mysql->errno);
+        throw new Exception($mysql->error,$mysql->errno);
     }
 }
