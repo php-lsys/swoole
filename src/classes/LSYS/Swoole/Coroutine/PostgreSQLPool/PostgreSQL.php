@@ -52,7 +52,6 @@ class PostgreSQL implements Connection{
             'dsn' => 'host=127.0.0.1 port=5432 dbname=test user=root password=',
         ];
         $conn  = $this->pgsql -> connect ($config['dsn']);
-        print_r($this->pgsql);exit;
         if(!$conn){
             throw new \LSYS\Exception($this->pgsql->error,$this->pgsql->errno);
         }

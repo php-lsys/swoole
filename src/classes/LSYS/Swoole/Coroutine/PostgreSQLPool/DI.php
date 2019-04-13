@@ -1,14 +1,14 @@
 <?php
 namespace LSYS\Swoole\Coroutine\PostgreSQLPool;
 /**
- * @method \LSYS\Swoole\Coroutine\PostgreSQLPool swoole_postgresql_pool() 得到SWOOLE PostgreSQL对象
+ * @method \LSYS\Swoole\Coroutine\PostgreSQLPool swoole_postgresql_pool($config=null) 得到SWOOLE PostgreSQL对象
  */
 class DI extends \LSYS\DI{
     /**
      *
      * @var string default config
      */
-    public static $config = 'swoole.postgresql';
+    public static $config = 'swoole.postgresql_pool';
     /**
      * @return static
      */

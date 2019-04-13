@@ -138,8 +138,7 @@ abstract class Pool{
 			    if($channel->length()<=$config['keep_size'])break;
 				$connection=$channel->pop();
 				if((time()-$connection->lastPushTime())>$config['keep_time']){
-					$this->currentCount[$node]--;
-					$connection->close();
+				    $this->free($connection);
 				}else return $connection;
 			}	
 		}
@@ -175,6 +174,11 @@ abstract class Pool{
 		$connection->changePushTime();
         $this->channel[$node]->push($connection);
         return $this;
+    }
+    public function free(Connection $connection) {
+        $node=$connection->node();
+        if(isset($this->currentCount[$node]))$this->currentCount[$node]--;
+        @$connection->close();
     }
     /**
      * 是否重试连接

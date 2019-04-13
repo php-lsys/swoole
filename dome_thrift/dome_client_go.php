@@ -6,8 +6,7 @@ require __DIR__."/boot.php";
 //客户端带连接池实现
 
 go(function () {
-    
-    $client_pool=LSYS\Swoole\Thrift\ClientPool\DI::get()->thrift_client_pool();
+    $client_pool=LSYS\Swoole\Coroutine\ClientPool\DI::get()->swoole_client_pool();
     $connect=$client_pool->pop("app1*");
     
     //协议要跟服务器对上

@@ -77,15 +77,6 @@ class TSwooleSocket extends TTransport
     $this->config_=$config+$this->config_;
     $this->debugHandler_ = $debugHandler ? $debugHandler : 'error_log';
   }
-
-  /**
-   * @param resource $handle
-   * @return void
-   */
-  public function setHandle($handle)
-  {
-    $this->handle_ = $handle;
-  }
   /**
    * Sets debugging output on or off
    *
@@ -123,7 +114,7 @@ class TSwooleSocket extends TTransport
    */
   public function isOpen()
   {
-      return is_object($this->handle_);
+      return is_object($this->handle_->isConnected());
   }
 
   /**

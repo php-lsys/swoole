@@ -1,14 +1,14 @@
 <?php
 namespace LSYS\Swoole\Coroutine\MySQLPool;
 /**
- * @method \LSYS\Swoole\Coroutine\MySQLPool swoole_mysql_pool() 得到SWOOLE MYSQL连接池
+ * @method \LSYS\Swoole\Coroutine\MySQLPool swoole_mysql_pool($config=null) 得到SWOOLE MYSQL连接池
  */
 class DI extends \LSYS\DI{
     /**
      *
      * @var string default config
      */
-    public static $config = 'swoole.mysql';
+    public static $config = 'swoole.mysql_pool';
     /**
      * @return static
      */

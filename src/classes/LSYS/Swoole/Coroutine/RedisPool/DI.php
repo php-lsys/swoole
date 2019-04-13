@@ -1,14 +1,14 @@
 <?php
 namespace LSYS\Swoole\Coroutine\RedisPool;
 /**
- * @method \LSYS\Swoole\Coroutine\RedisPool swoole_redis_pool() 得到SWOOLE Redis对象
+ * @method \LSYS\Swoole\Coroutine\RedisPool swoole_redis_pool($config=null) 得到SWOOLE Redis对象
  */
 class DI extends \LSYS\DI{
     /**
      *
      * @var string default config
      */
-    public static $config = 'swoole.redis';
+    public static $config = 'swoole.redis_pool';
     /**
      * @return static
      */

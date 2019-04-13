@@ -1,6 +1,5 @@
 <?php
 namespace LSYS\Swoole\Thrift\Server;
-use Thrift\Exception\TException;
 use Thrift\Exception\TTransportException;
 use Thrift\Transport\TTransport;
 use LSYS\Swoole\Coroutine\ClientPool;
@@ -9,7 +8,7 @@ use LSYS\Swoole\Coroutine\ClientPool;
  *
  * @package thrift.transport
  */
-class TSwoolePoolSocket extends TTransport
+class TSwooleSocketPool extends TTransport
 {
   /**
    * Handle to PHP socket
@@ -47,13 +46,13 @@ class TSwoolePoolSocket extends TTransport
    * @param string $debugHandler Function to call for error logging
    */
   public function __construct(
-        ClientPool $pool,
-        $node=null,
+        $config,
+        $node,
         $debugHandler=null
   ){
-    $this->pool_ = $pool;
-    $this->node_=$node;
-    $this->debugHandler_ = $debugHandler ? $debugHandler : 'error_log';
+        $this->pool_ = \LSYS\Swoole\Coroutine\ClientPool\DI::get()->swoole_client_pool($config);
+        $this->node_=$node;
+        $this->debugHandler_ = $debugHandler ? $debugHandler : 'error_log';
   }
   /**
    * @param resource $handle
@@ -112,14 +111,18 @@ class TSwoolePoolSocket extends TTransport
       
       if ($this->write>0) {
           $handle=$this->client_->swoole_client();
-          $buf=$this->pool_->query($this->client_,function()use($handle){
-              return $handle->recv();
-          });
+          $buf=$handle->recv();
+          if(!$buf){
+              $msg=$handle->errCode;
+              $this->close();
+              throw new TTransportException('TSocket: write fail:'.$msg);
+          }
           $this->write--;
           $this->buf.=$buf;
       }
       $slen=\Thrift\Factory\TStringFuncFactory::create()->strlen($this->buf);
       if ($slen<$len) {
+          $this->close();
           throw new TTransportException('TSocket['.$slen.'] read '.$len.' bytes failed.');
       }
       $data=\Thrift\Factory\TStringFuncFactory::create()->substr($this->buf, 0,$len);
@@ -135,9 +138,17 @@ class TSwoolePoolSocket extends TTransport
   public function write($buf)
   {
       $handle=$this->client_->swoole_client();
-      $buf=$this->pool_->query($this->client_,function()use($handle,$buf){
-          return $handle->send($buf);
-      });
+      if($this->write==0){//前面没有未接收的请求,可以重试请求
+          $buf=$this->pool_->query($this->client_,function()use($handle,$buf){
+              return $handle->send($buf);
+          });
+      }else{
+          if(!$handle->send($buf)){
+              $this->close();
+              $msg=$handle->errCode;
+              throw new TTransportException('TSocket: write fail:'.$msg);
+          }
+      }
       $this->write++;
    }
 
@@ -153,5 +164,8 @@ class TSwoolePoolSocket extends TTransport
   public function flush()
   {
     // no-op
+  }
+  public function __destruct() {
+      $this->close();
   }
 }
