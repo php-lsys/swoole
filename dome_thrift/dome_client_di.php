@@ -19,3 +19,15 @@ class MyClient extends \LSYS\DI{
         return $di;
     }
 }
+
+
+
+go(function(){
+    $client=MyClient::get()->product();
+    $recv1 = $client->test("dddd111");
+    print_r($recv1);
+    //主动释放
+    $client->release();
+});
+    
+    
