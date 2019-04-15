@@ -7,10 +7,12 @@ return array(
         'password' => '110',
         'fetch_mode' 		=> 1,
         'database' => 'test',
+        //'charset' => 'utf8',//字符编码
      ),
     "mysql_pool"=>array(
         "try"=>true,//发送错误重试次数,设置为TRUE为不限制
         "sleep"=>1,//断开连接重连暂停时间
+        "table_prefix"=>"t_",//表前缀
         "master"=>array(
             "size"=>1,//队列长度
 			//设置下面两个会清理释放空闲链接

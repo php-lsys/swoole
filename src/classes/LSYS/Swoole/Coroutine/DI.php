@@ -27,19 +27,19 @@ class DI extends \LSYS\DI{
         !isset($di->swoole_mysql)&&$di->swoole_mysql(new \LSYS\DI\ShareCallback(function($config=null){
             return $config?$config:self::$config_mysql;
         },function($config=null){
-            $config=\LSYS\Config\DI::get()->config($config);
+            $config=\LSYS\Config\DI::get()->config($config?$config:self::$config_mysql);
             return new \LSYS\Swoole\Coroutine\MySQL($config->asArray());
         }));
         !isset($di->swoole_postgresql)&&$di->swoole_postgresql(new \LSYS\DI\ShareCallback(function($config=null){
             return $config?$config:self::$config_postgresql;
         },function($config=null){
-            $config=\LSYS\Config\DI::get()->config($config);
+            $config=\LSYS\Config\DI::get()->config($config?$config:self::$config_postgresql);
             return new \LSYS\Swoole\Coroutine\PostgreSQL($config->asArray());
         }));
         !isset($di->swoole_redis)&&$di->swoole_redis(new \LSYS\DI\ShareCallback(function($config=null){
             return $config?$config:self::$config_redis;
         },function($config=null){
-            $config=\LSYS\Config\DI::get()->config($config);
+            $config=\LSYS\Config\DI::get()->config($config?$config:self::$config_redis);
             return new \LSYS\Swoole\Coroutine\Redis($config->asArray());
         }));
         !isset($di->swoole_client)&&$di->swoole_client(new \LSYS\DI\MethodCallback(function($config){
