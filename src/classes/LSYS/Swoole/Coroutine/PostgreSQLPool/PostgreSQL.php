@@ -18,7 +18,7 @@ class PostgreSQL implements Connection{
     }
     protected function create(){
 		$this->close();
-        $this->pgsql=new \LSYS\Swoole\Coroutine\PostgreSQL();
+        $this->pgsql=new \LSYS\Swoole\Coroutine\PostgreSQL($this->config);
     }
     /**
      * @return \Swoole\Coroutine\PostgreSQL

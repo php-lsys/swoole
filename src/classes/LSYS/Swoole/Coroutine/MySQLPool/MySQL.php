@@ -18,7 +18,7 @@ class MySQL implements Connection{
     }
     protected function create(){
 		$this->close();
-        $this->mysql=new \LSYS\Swoole\Coroutine\MySQL();
+        $this->mysql=new \LSYS\Swoole\Coroutine\MySQL($this->config);
     }
     /**
      * @return \LSYS\Swoole\Coroutine\MySQL
