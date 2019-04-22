@@ -14,6 +14,7 @@ class Redis extends \Swoole\Coroutine\Redis{
             'reconnect'			=> '1',
             'db'				=> NULL,
         ];
+		parent::__construct();
     }
     public function getConfig() {
         return $this->_config;

@@ -8,6 +8,7 @@ class PostgreSQL extends \Swoole\Coroutine\PostgreSQL{
         [
             'dsn' => 'host=127.0.0.1 port=5432 dbname=test user=root password=110',
         ];
+		parent::__construct();
     }
     public function getConfig() {
         return $this->_config;

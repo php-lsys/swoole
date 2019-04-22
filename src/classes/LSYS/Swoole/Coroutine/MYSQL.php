@@ -13,6 +13,7 @@ class MySQL extends \Swoole\Coroutine\MySQL{
             'fetch_mode'=> 1,
             'database' => 'test',
         ];
+		parent::__construct();
     }
     public function getConfig() {
         return $this->_config;
