@@ -1,4 +1,9 @@
 <?php
+/**
+ * @author     Lonely <shan.liu@msn.com>
+ * @copyright  (c) 2017 Lonely <shan.liu@msn.com>
+ * @license    http://www.apache.org/licenses/LICENSE-2.0
+ */
 namespace LSYS\Swoole\Coroutine;
 //连接声明为接口，为了可以在某些对象上直接实现
 interface Connection{

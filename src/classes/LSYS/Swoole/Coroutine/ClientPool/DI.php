@@ -1,4 +1,9 @@
 <?php
+/**
+ * @author     Lonely <shan.liu@msn.com>
+ * @copyright  (c) 2017 Lonely <shan.liu@msn.com>
+ * @license    http://www.apache.org/licenses/LICENSE-2.0
+ */
 namespace LSYS\Swoole\Coroutine\ClientPool;
 /**
  * @method \LSYS\Swoole\Coroutine\ClientPool swoole_client_pool($config=null) 得到SWOOLE client连接池

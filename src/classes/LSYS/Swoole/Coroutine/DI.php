@@ -1,4 +1,9 @@
 <?php
+/**
+ * @author     Lonely <shan.liu@msn.com>
+ * @copyright  (c) 2017 Lonely <shan.liu@msn.com>
+ * @license    http://www.apache.org/licenses/LICENSE-2.0
+ */
 namespace LSYS\Swoole\Coroutine;
 /**
  * @method \LSYS\Swoole\Coroutine\Client swoole_client($config) 得到SWOOLE client (非共享,每次调用创建)
