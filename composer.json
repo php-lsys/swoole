@@ -4,9 +4,9 @@
 	"license": "Apache-2.0",
 	"description" : "lsys module swoole",
 	"require" : {
-		"lsys/core" : "~0.0.0",
-		"lsys/config" : "~0.0.0",
-		"lsys/loger" : "~0.0.0"
+		"lsys/core" : "~0.0.1",
+		"lsys/config" : "~0.0.1",
+		"lsys/loger" : "~0.0.1"
 	},
 	"require-dev" : {
 		"eaglewu/swoole-ide-helper" : "dev-master",
