@@ -7,7 +7,7 @@
 namespace LSYS\Swoole\Coroutine;
 use LSYS\Swoole\Exception;
 class PostgreSQL extends \Swoole\Coroutine\PostgreSQL{
-    protected $_config;
+    protected $_config=[];
     public function __construct (array $config){
         $this->_config=$config+
         [
@@ -15,10 +15,10 @@ class PostgreSQL extends \Swoole\Coroutine\PostgreSQL{
         ];
 		parent::__construct();
     }
-    public function getConfig() {
+    public function getConfig():array{
         return $this->_config;
     }
-    public function connectFromConfig(){
+    public function connectFromConfig():bool{
         $config=$this->_config;
         $re=@$this->connect($config);
         if(!$re){

@@ -14,7 +14,7 @@ class Client implements Connection{
 	use \LSYS\Swoole\Coroutine\ConnectionTrait;
     protected $client;
     protected $config;
-    public function __construct(ClientPool $pool,$node,array $config){
+    public function __construct(ClientPool $pool,string $node,array $config){
         $this->pool=$pool;
         $this->node=$node;
         $this->config=$config;
@@ -32,7 +32,7 @@ class Client implements Connection{
         return $this->client;
     }
     protected $msg;
-    public function errMsg(){
+    public function errMsg():string{
         return $this->msg;
     }
     public function reConnect():bool
@@ -46,8 +46,9 @@ class Client implements Connection{
         }
         return false;
     }
-	public function close()
+	public function close():bool
     {
         if($this->client)@$this->client->close(); 
+        return true;
     }
 }

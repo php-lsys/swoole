@@ -25,7 +25,7 @@ interface Connection{
 	/**
      * 关闭链接
      */
-	public function close();
+	public function close():bool;
 	/**
      * 最后push时间
 　　　　　* @return int
@@ -34,5 +34,5 @@ interface Connection{
 	/**
      * 更改push时间
      */
-	public function changePushTime();
+	public function changePushTime():int;
 }

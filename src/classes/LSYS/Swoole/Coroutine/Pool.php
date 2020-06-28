@@ -150,17 +150,21 @@ abstract class Pool{
         return $channel->pop();
     }
 	//得到node节点的连接数量
-    protected function currentCount($node) {
+    protected function currentCount(?string $node):int{
         if(!isset($this->currentCount[$node])) $this->currentCount[$node]=0;
         return $this->currentCount[$node];
     }
-    protected function nodeCheck($node) {
+    protected function nodeCheck(?string $node) {
         if(empty($node)||!$this->config->exist($node)){
             throw new Exception(strtr("node[:node] not find",[":node"=>$node]));
         }
     }
-	//通过节点名查找channel
-    protected function nodeFindChannel($node) {
+	/**
+	 * 通过节点名查找channel
+	 * @param string $node
+	 * @return \Swoole\Coroutine\Channel
+	 */
+    protected function nodeFindChannel(?string $node) {
         if(!isset($this->channel[$node])){
             $this->nodeCheck($node);
             $size=(int)$this->config->get($node.".size",1);
@@ -194,7 +198,7 @@ abstract class Pool{
      * 是否重试连接
      * @return boolean
      */
-    protected function isTryConnect() {
+    protected function isTryConnect():bool{
         if(is_bool($this->_try)&&$this->_try)return true;
         $try=$this->_try=intval($this->_try);
         $this->_try--;
@@ -234,7 +238,7 @@ abstract class Pool{
      * 返回所有队列的统计数据,参见 channel 的 stats 返回
      * @return number[]
      */
-    public function stats(){
+    public function stats():array{
         $out=array();
         foreach ($this->channel as $k=>$v){
             $out[$k]=$v->stats();

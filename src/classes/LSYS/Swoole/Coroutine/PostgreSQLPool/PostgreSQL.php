@@ -14,7 +14,7 @@ class PostgreSQL implements Connection{
 	use \LSYS\Swoole\Coroutine\ConnectionTrait;
     protected $pgsql;
     protected $config;
-    public function __construct(PostgreSQLPool $pool,$node,array $config){
+    public function __construct(PostgreSQLPool $pool,string $node,array $config){
         $this->pool=$pool;
         $this->node=$node;
         $this->config=$config;
@@ -47,9 +47,10 @@ class PostgreSQL implements Connection{
         }
         return false;
     }
-    public function close()
+    public function close():bool
     {
 		unset($this->pgsql);
         $this->pgsql=null;
+        return true;
     }
 }

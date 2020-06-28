@@ -14,7 +14,7 @@ class MySQL implements Connection{
 	use \LSYS\Swoole\Coroutine\ConnectionTrait;
     protected $mysql;
     protected $config;
-    public function __construct(MySQLPool $pool,$node,array $config){
+    public function __construct(MySQLPool $pool,string $node,array $config){
         $this->pool=$pool;
         $this->node=$node;
         $this->config=$config;
@@ -47,11 +47,12 @@ class MySQL implements Connection{
         }
         return false;
     }
-	public function close()
+    public function close():bool
     {
         if($this->mysql){
             @$this->mysql->close();
             $this->mysql=null;
         }
+        return true;
     }
 }

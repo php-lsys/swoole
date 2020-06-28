@@ -7,7 +7,7 @@
 namespace LSYS\Swoole\Coroutine;
 use LSYS\Swoole\Exception;
 class Client extends \Swoole\Coroutine\Client{
-    protected $_config;
+    protected $_config=[];
     public function __construct (array $config){
         $this->_config=$config+
         [
@@ -20,10 +20,10 @@ class Client extends \Swoole\Coroutine\Client{
         ];
         parent::__construct($this->_config['sock_type']);
     }
-    public function getConfig() {
+    public function getConfig():array{
         return $this->_config;
     }
-    public function connectFromConfig(){
+    public function connectFromConfig():bool{
         $config=$this->_config;
         $this->set($config['set']);
         if(!$this->connect($config['host'], $config['port'],$config['set']['connect_timeout'])){

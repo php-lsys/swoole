@@ -7,7 +7,7 @@
 namespace LSYS\Swoole\Coroutine;
 use LSYS\Swoole\Exception;
 class Redis extends \Swoole\Coroutine\Redis{
-    protected $_config;
+    protected $_config=[];
     public function __construct (array $config){
         $this->_config=$config+
         [
@@ -21,10 +21,10 @@ class Redis extends \Swoole\Coroutine\Redis{
         ];
 		parent::__construct();
     }
-    public function getConfig() {
+    public function getConfig():array{
         return $this->_config;
     }
-    public function connectFromConfig(){
+    public function connectFromConfig():bool{
         $config=$this->_config;
         $this->setOptions(array_intersect_key($config, array_flip(array(
             'timeout','connect_timeout','serialize','reconnect',

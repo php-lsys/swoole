@@ -16,7 +16,7 @@ class Redis implements Connection{
     protected $redis;
     protected $isswoole=true;
     protected $config;
-    public function __construct(RedisPool $pool,$node,array $config){
+    public function __construct(RedisPool $pool,string $node,array $config){
         $this->pool=$pool;
         $this->node=$node;
         $this->config=$config;
@@ -39,12 +39,12 @@ class Redis implements Connection{
     {
         return $this->redis;
     }
-    public function getError() {
+    public function getError():string{
         if($this->isswoole){
             return $this->redis->errMsg;
         }else return $this->redis->getLastError();
     }
-    public function getErrno() {
+    public function getErrno():int{
         if($this->isswoole){
             return $this->redis->errCode;
         }else return 0;
@@ -91,5 +91,6 @@ class Redis implements Connection{
             @$this->redis->close();
             $this->redis=null;
         }
+        return true;
     }
 }

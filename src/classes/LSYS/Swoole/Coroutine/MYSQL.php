@@ -7,7 +7,7 @@
 namespace LSYS\Swoole\Coroutine;
 use LSYS\Swoole\Exception;
 class MySQL extends \Swoole\Coroutine\MySQL{
-    protected $_config;
+    protected $_config=[];
     public function __construct (array $config){
         $this->_config=$config+
         [
@@ -20,10 +20,10 @@ class MySQL extends \Swoole\Coroutine\MySQL{
         ];
 		parent::__construct();
     }
-    public function getConfig() {
+    public function getConfig():array{
         return $this->_config;
     }
-    public function connectFromConfig(){
+    public function connectFromConfig():bool{
         $config=$this->_config;
         $re=@$this->connect($config);
         if (!empty($config['charset'])) {

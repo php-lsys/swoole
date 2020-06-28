@@ -21,11 +21,13 @@ class myclient implements Connection{
     public function reConnect(): bool
     {
         //重新连接
+        return true;
     }
 
-    public function close()
+    public function close():bool
     {
         //关闭连接
+        return true;
     }
 }
 class mypool extends Pool{
