@@ -14,7 +14,7 @@ class MySQL extends \Swoole\Coroutine\MySQL{
             'host' => '127.0.0.1',
             'port' => 3306,
             'user' => 'root',
-            'password' => '110',
+            'password' => '',
             'fetch_mode'=> 1,
             'database' => 'test',
         ];
