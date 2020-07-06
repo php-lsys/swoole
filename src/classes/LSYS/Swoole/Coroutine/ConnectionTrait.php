@@ -30,7 +30,7 @@ trait ConnectionTrait{
 	/**
      * 更改push时间
      */
-	public function changePushTime():int{
+	public function changePushTime(){
 		 $this->lasttime=time();
 	}
 }

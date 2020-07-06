@@ -34,5 +34,5 @@ interface Connection{
 	/**
      * 更改push时间
      */
-	public function changePushTime():int;
+	public function changePushTime();
 }

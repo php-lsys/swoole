@@ -4,7 +4,7 @@ return array(
         'host' => '127.0.0.1',
         'port' => 3306,
         'user' => 'root',
-        'password' => '110',
+        'password' => '',
         'fetch_mode' 		=> 1,
         'database' => 'test',
         //'charset' => 'utf8',//字符编码
@@ -24,7 +24,7 @@ return array(
                 'host' => '127.0.0.1',
                 'port' => 3306,
                 'user' => 'root',
-                'password' => '110',
+                'password' => '',
                 'fetch_mode' 		=> 1,
                 'database' => 'test',
             )
@@ -36,7 +36,7 @@ return array(
                 'host' => '127.0.0.1',
                 'port' => 3306,
                 'user' => 'root',
-                'password' => '110',
+                'password' => '',
                 'fetch_mode' 		=> 1,
                 'database' => 'test',
             )
@@ -48,7 +48,7 @@ return array(
                 'host' => '127.0.0.1',
                 'port' => 3306,
                 'user' => 'root',
-                'password' => '110',
+                'password' => '',
                 'fetch_mode' 		=> 1,
                 'database' => 'test',
             )
@@ -60,7 +60,7 @@ return array(
                 'host' => '127.0.0.1',
                 'port' => 3306,
                 'user' => 'root',
-                'password' => '110',
+                'password' => '',
                 'fetch_mode' 		=> 1,
                 'database' => 'test',
             )
@@ -68,7 +68,7 @@ return array(
     ),
     "redis"=>array(
       ///  'auth'              =>'sss',
-        'host'             	=> '192.168.1.101',
+        'host'             	=> '127.0.0.1',
         'port'             	=> 6379,
         'timeout'			=> '60',
         'db'				=> NULL,
@@ -81,7 +81,7 @@ return array(
             "weight"=>1,//权重
             "connection"=>array(
                // 'auth'              =>'xxx',
-                'host'             	=> '192.168.1.101',
+                'host'             	=> '127.0.0.1',
                 'port'             	=> 6379,
                 'timeout'			=> '60',
                 'db'				=> NULL,

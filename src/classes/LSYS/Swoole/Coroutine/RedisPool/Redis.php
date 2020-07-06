@@ -85,7 +85,7 @@ class Redis implements Connection{
        }
        return $this->redis->connectFromConfig();
     }
-    public function close()
+    public function close():bool
     {
         if($this->redis){
             @$this->redis->close();
