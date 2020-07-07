@@ -1,6 +1,15 @@
 <?php
 return array(
     "mysql"=>array(
+        'host' => '127.0.0.1',
+        'port' => 3306,
+        'user' => 'root',
+        'password' => '110',
+        'fetch_mode' 		=> 1,
+        'database' => 'test',
+        //'charset' => 'utf8',//字符编码
+    ),
+    "mysql_pool"=>array(
         "try"=>true,//发送错误重试次数,设置为TRUE为不限制
         "sleep"=>1,//断开连接重连暂停时间
         "master"=>array(
