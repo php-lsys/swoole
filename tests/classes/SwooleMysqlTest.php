@@ -6,7 +6,7 @@ final class SwooleMysqlTest extends TestCase
     public function testPopPush()
     {
         go(function () {
-            $mysql=\LSYS\Swoole\Coroutine\MySQLPool\DI::get()->swoole_mysql_pool();
+            $mysql=\LSYS\Swoole\Coroutine\DI::get()->swoole_mysql_pool();
             $connection=$mysql->pop();
             
             $res=$connection->mysql()->query("select sleep(1) as sleepnum");

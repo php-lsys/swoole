@@ -9,7 +9,7 @@ include_once __DIR__."/../vendor/autoload.php";
 
 go(function () {
     //可以在以下基础上在进行一次封装.如集成进 swoft
-    $mysql=\LSYS\Swoole\Coroutine\MySQLPool\DI::get()->swoole_mysql_pool();
+    $mysql=\LSYS\Swoole\Coroutine\DI::get()->swoole_mysql_pool();
     //如果你使用框架带了依赖管理器,可通过把自行NEW对象并注册到你的依赖管理器中
     //$mysql = new \LSYS\Swoole\Coroutine\MySQLPool($config);
     for ($i = 0; $i < 100; $i++) {

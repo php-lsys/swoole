@@ -9,7 +9,7 @@ go(function () {
         co::create(function (){
             //可以在以下基础上在进行一次封装.如集成进 swoft
             //如果你使用框架带了依赖管理器,可通过把自行NEW对象并注册到你的依赖管理器中
-            $redis=\LSYS\Swoole\Coroutine\RedisPool\DI::get()->swoole_redis_pool();
+            $redis=\LSYS\Swoole\Coroutine\DI::get()->swoole_redis_pool();
             //$msyql = new \LSYS\Swoole\Coroutine\RedisPool($config);
             //从线程池中得到一个连接对象
             $connection=$redis->pop();
